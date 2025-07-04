@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv"
+import connectdb from "./connectdb.js";
 
 dotenv.config({})
 
@@ -12,6 +13,7 @@ app.get("/", (req, res)=>{
     res.send("Hello from app");
 })
 
+connectdb()
 app.listen(PORT, () => {
     console.log(`Server Started at : http://localhost:${PORT}`);
 })
