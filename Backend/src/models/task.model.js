@@ -36,7 +36,16 @@ const taskSchema = new mongoose.Schema({
         type: Date,
 
     },
-    
+    comments:[
+        {
+            userId: {
+                type: [mongoose.Schema.Types.ObjectId],
+                ref: User
+            },
+            content: String,
+            createdAt: Date,
+        }
+    ]
 },{timestamps:true})
 
 export const Task = mongoose.model("Task", taskSchema);
