@@ -1,0 +1,35 @@
+{
+  _id: ObjectId,        // auto-generated
+  title: String,        // Task title
+  description: String,  // Task details
+  projectId: ObjectId,  // Reference to the project
+  assigneeId: ObjectId, // Reference to User (who the task is assigned to)
+  creatorId: ObjectId,  // Reference to User (who created the task)
+  status: String,       // Task status (e.g., "ToDo", "InProgress", "Completed")
+  priority: String,     // e.g., Low, Medium, High
+  dueDate: Date,        // Optional: Due date for the task
+  createdAt: Date,      // Timestamp of task creation
+  updatedAt: Date,      // Timestamp of task update
+  comments: [           // Embedded array of comments
+    {
+      userId: ObjectId, // Reference to User (commenter)
+      content: String,  // Comment text
+      createdAt: Date,  // Timestamp of comment
+    }
+  ],
+  tags: [String]        // Array of tag names (e.g., ["Urgent", "UI"])
+}
+
+{
+  _id: ObjectId,  // auto-generated
+  name: String,   // Tag name (e.g., "Urgent", "Bug", "Enhancement")
+  color: String,  // Optional: Tag color in hex (e.g., "#FF5733")
+}
+
+{
+  _id: ObjectId,     // auto-generated
+  userId: ObjectId,  // Reference to User (recipient)
+  message: String,   // Notification message
+  isRead: Boolean,   // Whether the user has read the notification
+  createdAt: Date,   // Timestamp when the notification was created
+}

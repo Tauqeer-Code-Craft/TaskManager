@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { Project } from "./project.model.js";
+import { User } from "./user.model.js";
 
 const taskSchema = new mongoose.Schema({
     title: {
@@ -13,7 +14,29 @@ const taskSchema = new mongoose.Schema({
     projectId: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: Project
-    }
-})
+    },
+    assigneeId:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: User,
+    },
+    creatorId:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref : User,
+    },
+    status:{
+        type: String,
+        enum: ["ToDo","InProgress", "Completed"],
+        required: true,
+    },
+    priority:{
+        type: String,
+        enum: ["Low","Medium","High"]
+    },
+    dueDate:{
+        type: Date,
+
+    },
+    
+},{timestamps:true})
 
 export const Task = mongoose.model("Task", taskSchema);
