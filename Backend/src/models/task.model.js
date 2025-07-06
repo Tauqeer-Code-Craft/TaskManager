@@ -17,11 +17,11 @@ const taskSchema = new mongoose.Schema({
     },
     assigneeId:{
         type: [mongoose.Schema.Types.ObjectId],
-        ref: User,
+        ref: "User",
     },
     creatorId:{
         type:[mongoose.Schema.Types.ObjectId],
-        ref : User,
+        ref : "User",
     },
     status:{
         type: String,
@@ -40,7 +40,7 @@ const taskSchema = new mongoose.Schema({
         {
             userId: {
                 type: [mongoose.Schema.Types.ObjectId],
-                ref: User
+                ref: "User"
             },
             content: String,
             createdAt: Date,
