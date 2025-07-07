@@ -1,6 +1,4 @@
 import mongoose from "mongoose"
-import { Project } from "./project.model.js";
-import { User } from "./user.model.js";
 
 const taskSchema = new mongoose.Schema({
     title: {
@@ -13,7 +11,7 @@ const taskSchema = new mongoose.Schema({
     },
     projectId: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: Project
+        ref: "Project"
     },
     assigneeId:{
         type: [mongoose.Schema.Types.ObjectId],
@@ -34,7 +32,6 @@ const taskSchema = new mongoose.Schema({
     },
     dueDate:{
         type: Date,
-
     },
     comments:[
         {
