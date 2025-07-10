@@ -3,18 +3,8 @@ import React from 'react'
 const App: React.FC = () => {
   return (
     <div>App
-      <div><h1>helovhsd</h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
-      <h1></h1>
+      <div><h1>helo from fronntend</h1>
+    
       <h1></h1>
       <h1></h1>
       <h1></h1></div>
