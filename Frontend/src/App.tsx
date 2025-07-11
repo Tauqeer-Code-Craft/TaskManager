@@ -25,7 +25,7 @@ const App: React.FC = () => {
         </Route>
 
         {/* User Routes */}
-        <Route>
+        <Route element={<PrivateRoute allowedRoles={["user"]}/>}>
           <Route path='/user/dashboard' element={<UserDashBoard/>} />
           <Route path='/user/tasks' element={<MyTasks/>} />
           <Route path='/user/task-details/:id' element={<ViewTaskdetails/>} />
