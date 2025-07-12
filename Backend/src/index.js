@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv"
 import connectdb from "./connectdb.js";
-import userRoute from "./routes/user.routes.js"
+import authRoute from "./routes/auth.route.js"
 
 dotenv.config({})
 
@@ -14,7 +14,10 @@ app.get("/", (req, res)=>{
     res.send("Hello from app");
 })
 
-app.use('/api/auth',userRoute);
+app.use('/api/auth',authRoute);
+// app.use('/api/users',userRoute);
+// app.use('/api/task',taskRoute);
+// app.use('/api/reports',reportRoute);
 
 connectdb()
 app.listen(PORT, () => {
