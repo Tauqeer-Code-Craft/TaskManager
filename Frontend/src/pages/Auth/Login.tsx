@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
-import { useNavigate,Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Input from '../../components/Inputs/Input';
 import {validateEmail} from '../../utils/helper';
 
@@ -9,7 +9,7 @@ const Login: React.FC = () => {
   const [password,setPassword] = useState<string>("");
   const [error,setError] = useState<string|null>(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   //Handling the form
   const handleLogin = async (e: React.FormEvent) => {
@@ -53,8 +53,6 @@ const Login: React.FC = () => {
             label = "Password"
             placeholder= "Min 8 Characters"
             type="password"
-
-
           ></Input>
 
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
