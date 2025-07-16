@@ -1,9 +1,12 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import AuthLayout from '../../components/layouts/AuthLayout'
-import {validateEmail} from '../../utils/helper';
 import ProfilePhotoSelecter from '../../components/Inputs/ProfilePhotoSelecter';
 import Input from '../../components/Inputs/Input';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {validateEmail} from '../../utils/helper';
+import  axiosInstance  from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPaths';
+import {UserContext} from '../../context/userContext';
 
 
 const Signup:React.FC = () => {
@@ -15,6 +18,9 @@ const Signup:React.FC = () => {
   const [adminInviteToken, setAdminInviteToken] = useState<string>("");
 
   const [error,setError] = useState<string|null>(null);
+
+  const {updateUser} = useContext(UserContext);
+  const navigate = useNavigate();
   
   const handleSignUp = async (e: React.FormEvent) => {
       e.preventDefault();
@@ -36,7 +42,40 @@ const Signup:React.FC = () => {
   
       setError("");
   
-      //Login API Call
+      //SignUp API Call
+      
+      try {
+        
+        const response = await axiosInstance.post(API_PATHS.AUTH.RESGISTER,{
+          name: fullName,
+          email,
+          password,
+          adminInviteToken
+        });
+
+        const {token,role} = response.data;
+
+        if(token){
+          localStorage.setItem("token",token);
+          updateUser(response.data)
+
+          //Redirect based on role
+          if(role === "admin"){
+            navigate("/admin/dashboard");
+          }else{
+            navigate("/user/dashboard")
+          }
+        }
+
+      } catch (error:any) {
+        if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else{
+        setError("Something went wrong. Please try again.");
+      }
+      }
+
+
     }
 
   return (

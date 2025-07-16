@@ -9,9 +9,11 @@ import CreateTask from './pages/Admin/CreateTask'
 import UserDashBoard from './pages/User/UserDashBoard'
 import MyTasks from './pages/User/MyTasks'
 import ViewTaskdetails from './pages/User/ViewTaskdetails'
+import UserProvider from './context/userContext'
 
 const App: React.FC = () => {
   return (
+  <UserProvider>
     <div>
       <Routes>
         <Route path='/login' element={<Login />} />
@@ -32,6 +34,7 @@ const App: React.FC = () => {
         </Route>
       </Routes>
     </div>
+  </UserProvider>
 
   )
 }

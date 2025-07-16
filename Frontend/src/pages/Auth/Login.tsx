@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/Inputs/Input';
+import  axiosInstance  from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPaths';
 import {validateEmail} from '../../utils/helper';
+import {UserContext} from '../../context/userContext';
+import axios from 'axios';
 
 const Login: React.FC = () => {
   const [email,setEmail] = useState<string>("");
   const [password,setPassword] = useState<string>("");
   const [error,setError] = useState<string|null>(null);
 
-  // const navigate = useNavigate();
+  const {updateUser} = useContext(UserContext);
+  const navigate = useNavigate();
 
   //Handling the form
   const handleLogin = async (e: React.FormEvent) => {
@@ -28,6 +33,34 @@ const Login: React.FC = () => {
     setError("");
 
     //Login API Call
+
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN,{
+        email, password,
+      });
+
+      const {token , role} = response.data;
+
+      if (token){
+        localStorage.setItem("token", token);
+        updateUser(response.data)
+
+        //Redirect based on role
+        if(role === "admin"){
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
+
+      }
+    } catch (error:unknown) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+          setError(error.response.data.message);
+      } else {
+          setError("Something went wrong. Please try again.");
+      }
+    }
+
   }
   
   return (
@@ -57,7 +90,7 @@ const Login: React.FC = () => {
 
             {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
 
-            <button type='submit' className='btn-primary '>
+            <button type='submit' className='btn-primary  ' disabled={!email||!password}>
             LOGIN
             </button>
 
