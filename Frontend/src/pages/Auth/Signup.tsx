@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {validateEmail} from '../../utils/helper';
 import  axiosInstance  from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
+import  uploadImage  from '../../utils/uploadImage';
 import {UserContext} from '../../context/userContext';
 
 
@@ -24,6 +25,8 @@ const Signup:React.FC = () => {
   
   const handleSignUp = async (e: React.FormEvent) => {
       e.preventDefault();
+
+      let profileImageUrl:string = ""
   
       if (!validateEmail(email)) {
         setError("Please enter a valid email address.");
@@ -46,10 +49,16 @@ const Signup:React.FC = () => {
       
       try {
         
+        //Upload image if present 
+        const imgUploadRes = await uploadImage(profilePic)
+        profileImageUrl = imgUploadRes.imageUrl || "";
+
+
         const response = await axiosInstance.post(API_PATHS.AUTH.RESGISTER,{
           name: fullName,
           email,
           password,
+          profileImageUrl,
           adminInviteToken
         });
 
@@ -116,7 +125,7 @@ const Signup:React.FC = () => {
           
           <Input
             value={adminInviteToken}
-            onChange= {({target}: React.ChangeEvent<HTMLInputElement>)=> setPassword(target.value)}
+            onChange= {({target}: React.ChangeEvent<HTMLInputElement>)=> setAdminInviteToken(target.value)}
             label = "Admin Invite Token"
             placeholder= "6 Digit Code"
             type="text"
