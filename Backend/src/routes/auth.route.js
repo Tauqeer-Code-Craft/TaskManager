@@ -11,6 +11,10 @@ router.get("/profile",authMiddleWare.protect,authController.getUserProfile);
 router.put("/profile",authMiddleWare.protect,authController.updatedUserProfile);
 
 router.post("/upload-image", upload.single("image"),(req,res)=>{
+    console.log("Request body:", req.body);
+    console.log("Request file:", req.file);
+
+    
     if(!req.file){
         return res.status(400).json({message: "No file uploaded"});
     }
@@ -18,6 +22,6 @@ router.post("/upload-image", upload.single("image"),(req,res)=>{
         req.file.filename
     }`;
     res.status(200).json({imageUrl})
-})
+});
 
 export default router;
