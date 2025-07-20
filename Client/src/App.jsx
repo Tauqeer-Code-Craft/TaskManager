@@ -10,9 +10,9 @@ import UserDashBoard from './pages/User/UserDashBoard'
 import MyTasks from './pages/User/MyTasks'
 import ViewTaskdetails from './pages/User/ViewTaskdetails'
 import UserProvider from './context/userContext'
-
-const App: React.FC = () => {
-  return (
+const App = () => {
+  
+return (
   <UserProvider>
     <div>
       <Routes>
@@ -37,6 +37,7 @@ const App: React.FC = () => {
   </UserProvider>
 
   )
+  
 }
 
 export default App

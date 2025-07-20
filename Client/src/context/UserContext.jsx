@@ -1,23 +1,9 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import { API_PATHS } from '../utils/apiPaths';
 
-// Define a type for the user object
-interface User {
-  token: string;
-  [key: string]: any; // if your user object has more fields
-}
-
-// Define the shape of your context
-interface UserContextType {
-  user: User | null;
-  loading: boolean;
-  updateUser: (userData: User) => void;
-  clearUser: () => void;
-}
-
 // Create context with default value
-export const UserContext = createContext<UserContextType>({
+export const UserContext = createContext({
   user: null,
   loading: true,
   updateUser: () => {},
@@ -25,13 +11,9 @@ export const UserContext = createContext<UserContextType>({
 });
 
 // Define props for the provider
-interface UserProviderProps {
-  children: ReactNode;
-}
-
-const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) return;
@@ -57,7 +39,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     fetchUser(); // ✅ You forgot to call fetchUser
   }, [user]);
 
-  const updateUser = (userData: User) => {
+  const updateUser = (userData) => {
     setUser(userData);
     localStorage.setItem('token', userData.token);
     setLoading(false);
