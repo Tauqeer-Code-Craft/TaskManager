@@ -1,6 +1,8 @@
 import {User} from "../models/User.model.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import cloudinary from "../utils/cloudinary.js";
+import { getDataUri } from "../utils/dataUri.js"; // assuming you fixed this path
 
 //generate jwt token
 const generateToken = (userId) => {
@@ -8,51 +10,60 @@ const generateToken = (userId) => {
 }
 
 
-const registerUser = async (req,res) => {
-    try {
+const registerUser = async (req, res) => {
+  try {
+    const { name, email, password, adminInviteToken } = req.body;
 
-        const {name,email,password,profileImageUrl,adminInviteToken} = req.body;
-
-        //check if user already exists
-        const userExists = await User.findOne({email})
-        if (userExists) {
-            return res.status(400).json({message: "User already exists"})
-        }
-
-        //role
-        let role = "member";
-        if (adminInviteToken && adminInviteToken == process.env.ADMIN_INVITE_TOKEN) {
-            role = "admin";
-        }
-
-        //hash password
-        const salt = await bcrypt.genSalt(10)
-        const hashPassword = await bcrypt.hash(password,salt);
-
-        //create new user
-        const user = await User.create({
-            name,
-            email,
-            password: hashPassword,
-            profileImageUrl,
-            role,
-        })
-
-        //Return user data with jwt 
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            profileImageUrl: user.profileImageUrl,
-            token: generateToken(user._id),
-        }); 
-
-    } catch (error) {
-        res.status(500).json({message: "Server error",error: error.message})
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
     }
-}
 
+    // Set default role
+    let role = "member";
+    if (adminInviteToken && adminInviteToken === process.env.ADMIN_INVITE_TOKEN) {
+      role = "admin";
+    }
+
+    // Upload profile image to Cloudinary if provided
+    let profileImageUrl = null;
+    if (req.file) {
+      const fileUri = getDataUri(req.file);
+      const result = await cloudinary.uploader.upload(fileUri.content, {
+        folder: "task-manager/users",
+     });
+
+
+      profileImageUrl = result.secure_url;
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    // Create new user
+    const user = await User.create({
+      name,
+      email,
+      password: hashPassword,
+      profileImageUrl,
+      role,
+    });
+
+    // Respond with token and user data
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      profileImageUrl: user.profileImageUrl,
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 const loginUser = async (req,res)=> {
     try { 

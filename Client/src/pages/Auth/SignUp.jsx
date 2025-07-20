@@ -11,71 +11,83 @@ import { UserContext } from '../../context/userContext';
 
 const Signup = () => {
   const [profilePic, setProfilePic] = useState(null);
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('test');
+  const [email, setEmail] = useState('test@gmail.com');
+  const [password, setPassword] = useState('test21241');
   const [adminInviteToken, setAdminInviteToken] = useState('');
   const [error, setError] = useState(null);
 
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
+const handleSignUp = async (e) => {
+  e.preventDefault();
 
-    let profileImageUrl = '';
+  if (!validateEmail(email)) {
+    setError('Please enter a valid email address.');
+    return;
+  }
 
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
-      return;
-    }
+  if (!profilePic) {
+    setError('Please select a profile picture.');
+    return;
+  }
 
-    if (!fullName) {
-      setError('Please enter full name.');
-      return;
-    }
+  if (!fullName) {
+    setError('Please enter full name.');
+    return;
+  }
 
-    if (!password) {
-      setError('Please enter the password.');
-      return;
-    }
+  if (!password) {
+    setError('Please enter the password.');
+    return;
+  }
 
-    setError('');
+  setError('');
 
-    try {
-      // Upload image if present
-      const imgUploadRes = await uploadImage(profilePic);
-      profileImageUrl = imgUploadRes.imageUrl || '';
+  try {
+    const formData = new FormData();
+    formData.append('name', fullName);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('image', profilePic); // file object
+    formData.append('adminInviteToken', adminInviteToken);
 
-      const response = await axiosInstance.post(API_PATHS.AUTH.RESGISTER, {
-        name: fullName,
-        email,
-        password,
-        profileImageUrl,
-        adminInviteToken,
-      });
-
-      const { token, role } = response.data;
-
-      if (token) {
-        localStorage.setItem('token', token);
-        updateUser(response.data);
-
-        // Redirect based on role
-        if (role === 'admin') {
-          navigate('/admin/dashboard');
-        } else {
-          navigate('/user/dashboard');
-        }
+    const response = await axiosInstance.post(
+      API_PATHS.AUTH.REGISTER,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message);
+    );
+
+    const { token, role } = response.data;
+
+    if (token) {
+      localStorage.setItem('token', token);
+      updateUser(response.data);
+
+      if (role === 'admin') {
+        navigate('/admin/dashboard');
       } else {
-        setError('Something went wrong. Please try again.');
+        navigate('/user/dashboard');
       }
     }
-  };
+    
+console.log("ProfilePic:", profilePic);
+console.log("ProfilePic instanceof File:", profilePic instanceof File);
+  } catch (error) {
+    if (error.response && error.response.data.message) {
+      setError(error.response.data.message);
+    } else {
+      setError('Something went wrong. Please try again.');
+    }
+  }
+
+};
+
 
   return (
     <AuthLayout>
