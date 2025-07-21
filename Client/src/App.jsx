@@ -21,7 +21,7 @@ return (
         
         {/* //Admin Routes  */}
         <Route element={<PrivateRoute allowedRoles={["admin"]}/>} >
-          <Route path='/admin/dashboard' element={<AdminDashBoard/>}></Route> 
+          <Route path='/admin/dashboard' element={<DashBoard/>}></Route> 
           <Route path='/admin/tasks' element={<ManageTasks/>}></Route> 
           <Route path='/admin/create-task' element={<CreateTask/>}></Route> 
         </Route>

@@ -1,12 +1,13 @@
 import React from 'react'
 import { useUserAuth} from "../../hooks/useUserAuth"
+import DasboardLayout from '../../components/layouts/DasboardLayout';
 
 const Dashboard = () => {
 
   useUserAuth();
 
   return (
-    <div></div>
+    <DasboardLayout activeMenu="Dashboard" >Dashboard</DasboardLayout>
   )
 }
 

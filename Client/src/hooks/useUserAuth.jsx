@@ -1,11 +1,10 @@
 import React,{useContext,useEffect} from 'react'
 import {useNavigate} from "react-router-dom"
 import { UserContext } from "../context/UserContext"
-import DasboardLayout from '../components/layouts/DasboardLayout'
 
 export const useUserAuth = () => {
 
-  const {user,loading,clearUser} = useContext(UserContext)
+  const { user,loading,clearUser } = useContext(UserContext)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +15,7 @@ export const useUserAuth = () => {
       clearUser();
       navigate("/login")
     }
-  },[user,loading,clearUser,navigate()])
+  },[user,loading,clearUser,navigate])
 
 }
 

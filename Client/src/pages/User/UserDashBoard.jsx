@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import useUserAuth from '../../hooks/useUserAuth'
+import {useUserAuth} from '../../hooks/useUserAuth'
 import DasboardLayout from '../../components/layouts/DasboardLayout'
 import { UserContext } from '../../context/UserContext'
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect,useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { useNavigate } from 'react-router-dom';
 import { SIDE_MENU_DATA, SIDE_MENU_USER_DATA } from '../../utils/data';
@@ -47,7 +47,7 @@ const SideMenu = ({activeMenu}) => {
             )}
 
             <h5 className='text-gray-950 font-medium leading-6 mt-3 '>
-                {uesr?.name || ""}
+                {user?.name || ""}
             </h5>
 
             <p className='text-[12px] text-gray-500'>{user?.email || ""}</p>
