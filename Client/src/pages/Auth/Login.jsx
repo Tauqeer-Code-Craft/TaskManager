@@ -5,7 +5,7 @@ import Input from '../../components/Inputs/Input';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import { validateEmail } from '../../utils/helper';
-import { UserContext } from '../../context/userContext';
+import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 
 const Login = () => {

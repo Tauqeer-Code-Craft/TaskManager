@@ -2,14 +2,14 @@ import React from 'react'
 import { Routes,Route } from 'react-router-dom'
 import Login from './pages/Auth/Login'
 import Signup from './pages/Auth/Signup'
-import AdminDashBoard from './pages/Admin/AdminDashBoard'
+import DashBoard from './pages/Admin/DashBoard'
 import PrivateRoute from './routes/PrivateRoute'
 import ManageTasks from './pages/Admin/ManageTasks'
 import CreateTask from './pages/Admin/CreateTask'
 import UserDashBoard from './pages/User/UserDashBoard'
 import MyTasks from './pages/User/MyTasks'
 import ViewTaskdetails from './pages/User/ViewTaskdetails'
-import UserProvider from './context/userContext'
+import UserProvider from './context/UserContext'
 const App = () => {
   
 return (
