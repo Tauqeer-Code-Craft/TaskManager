@@ -34,6 +34,10 @@ const Dashboard = () => {
     }
   }
 
+  const onSeeMore = () => {
+    navigate('/admin/tasks')
+  }
+
   useEffect(()=>{
     getDashboardData();
 
@@ -84,7 +88,22 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div></div>
+      <div className='gird grid-cols-1 md:grid-cols-2 gap-6 my-4 md:my-6'>
+        <div className='md:col-span-2'>
+          <div className='card'>
+            <div className='flex items-center justify-between'>
+              <h5 className='text-lg'>Recent Tasks</h5>
+
+              <button className='card-btn' onClick={onSeeMore}>
+                See All <LuArrowRight className="text-base" />
+              </button>
+            </div>
+
+            <TaskListTable tableData={dashboardData?.recentTasks || []} />
+
+          </div>
+        </div>
+      </div>
     </DasboardLayout>
   )
 }
